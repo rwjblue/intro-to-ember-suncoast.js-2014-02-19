@@ -1,0 +1,569 @@
+<!--
+Google IO 2012 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahe <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google IO 2012</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="all" href="theme/css/app.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+<!-- <slide class="logoslide nobackground">
+  <article class="flexbox vcenter">
+    <span><img src="images/google_developers_logo.png"></span>
+  </article>
+</slide>
+ -->
+<slide class="title-slide segue nobackground">
+  <aside class="gdbar"><img src="images/ember_icon_128.png"></aside>
+  <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+  <hgroup class="auto-fadein">
+    <h1 data-config-title><!-- populated from slide_config.json --></h1>
+    <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+    <p data-config-presenter><!-- populated from slide_config.json --></p>
+  </hgroup>
+</slide>
+
+
+<slide  >
+  
+    <hgroup>
+      <h2>About Me</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li><a href="https://github.com/rjackson">github.com/rjackson</a></li>
+<li><a href="https://twitter.com/rwjblue">twitter.com/rwjblue</a></li>
+<li>Frequent Ember.js Contributor</li>
+<li>Ember Release Management Team</li>
+<li>General Open Source Fanatic</li>
+<li>Senior Developer with <a href="http://dockyard.com">DockYard</a></li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Intro</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>What is Ember.js?</p>
+<ul>
+<li>A framework for creating Ambitious web applications</li>
+<li>Favors convention over configuration</li>
+<li>Open source</li>
+<li>Community Driven</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Intro</h2>
+      <h3>Major Features</h3>
+    </hgroup>
+    <article ><ul>
+<li>Two-way Data Bindings</li>
+<li>First-class Router - URL first routing</li>
+<li>Cocoa Style MVC</li>
+</ul></article>
+ 
+</slide>
+
+<slide class="big" >
+  
+    <hgroup>
+      <h2>Agenda</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>Things we'll cover:</p>
+<ul class="build">
+<li>Object Model Basics</li>
+<li>Templates</li>
+<li>Routes</li>
+<li>Controllers</li>
+<li>Actions</li>
+</ul></article>
+ 
+</slide>
+
+<slide class="big" >
+  
+    <hgroup>
+      <h2>Object Model Basics</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li>Classes</li>
+<li>Computed Properties</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Classes via Ember.Object.extend</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><pre class="prettyprint" data-lang="javascript">
+var Person = Ember.Object.extend({
+  fullName: function(){
+    return this.get('firstName') + ' ' + this.get('lastName');
+  }
+});
+
+var rob = Person.create({
+  firstName: 'Robert',
+  lastName: 'Jackson'
+});
+
+rob.fullName(); // 'Robert Jackson'
+</pre></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Classes via Ember.Object.extend Notes</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li>Generally all objects in Ember will extend from Ember.Object</li>
+<li>To create an instance of a class, use <code>.create</code></li>
+<li>Pass an object/hash to <code>.create</code> to populate with data</li>
+<li>Use <code>get</code>/<code>set</code> to retrieve or set values.</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Computed Properties</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><pre class="prettyprint" data-lang="javascript">
+var Person = Ember.Object.extend({
+  fullName: function(){
+    return this.get('firstName') + ' ' + this.get('lastName');
+  }.property('firstName', 'lastName');
+});
+
+var rob = Person.create({
+  firstName: 'Robert',
+  lastName: 'Jackson'
+});
+
+rob.get('fullName'); // 'Robert Jackson'
+</pre></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Computed Properties Notes</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li>Using <code>.property()</code> sets up caching of a function's return value</li>
+<li>Specify dependent keys to force invalidation upon changes</li>
+<li>Use <code>.get('someProperty')</code> for looking up</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Templates</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li>Uses Handlebars.js</li>
+<li>Customized to allow two-way data binding</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Templates</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><pre class="prettyprint" data-lang="handlebars">
+&lt;h2>{{title}}&lt;/h2>
+<p>This text is always displayed.</p>
+
+{{#if title}}
+  <p>This text is only displayed if a title is present.</p>
+{{/if}}
+
+<div>{{input value=title}}</div>
+</pre>
+
+<p><a href="http://emberjs.jsbin.com/yah/1/edit?html,javascript,live">JSBin Demo</a></p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Templates Notes</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li>Use <code>{{</code> and <code>}}</code> to delineate handlebars helpers.</li>
+<li><code>if</code>, <code>each</code>, <code>with</code>, <code>bind</code>, <code>view</code>, and MANY more helpers exist.</li>
+<li>Context of the template can change (notice in <code>#each</code> example)</li>
+<li>More to come later!</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Basic Route</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>Route:</p>
+<pre class="prettyprint" data-lang="javascript">
+App = Ember.Application.create();
+App.ApplicationRoute = Ember.Route.extend({
+  model: function(){
+    return {firstName: 'Robert', lastName: 'Jackson'};
+  }
+});
+</pre>
+
+<p>Template:</p>
+<pre class="prettyprint" data-lang="handlebars">
+{{! application.hbs}}
+&lt;h2>Hi, {{firstName}} {{lastName}}!!&lt;/h2>
+</pre>
+
+<p><a href="http://emberjs.jsbin.com/pac/1/edit?html,javascript,live">JSBin Demo</a></p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Basic Route Notes</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li>ApplicationRoute + Template are the starting point</li>
+<li>The <code>model</code> hook will be executed upon entering your route</li>
+<li>The return value of the <code>model</code> hook is used as the contexted
+  of the template.</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Index Route</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>Route:</p>
+<pre class="prettyprint" data-lang="javascript">
+App = Ember.Application.create();
+App.IndexRoute = Ember.Route.extend({
+  model: function(){
+    return ['red', 'yellow','blue'];
+  }
+});
+</pre>
+
+<p>Template:</p>
+<pre class="prettyprint" data-lang="handlebars">
+{{! application.hbs}}
+{{outlet}}
+
+{{! index.hbs}}
+{{#each}} {{this}} {{/each}}
+</pre>
+
+<p><a href="http://emberjs.jsbin.com/juj/1/edit?html,javascript,live">JSBin Demo</a></p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Index Route Notes</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li><code>{{outlet}}</code> indicates where nested resources get rendered</li>
+<li><code>{{each}}</code> allows iterating over a collection</li>
+<li><code>this</code> in a template can be changed (very similar to normal JavasScript)</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Router</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><pre class="prettyprint" data-lang="javascript">
+App = Ember.Application.create();
+App.Router.map(function(){
+  this.resource('posts', function(){
+    this.resource('post', {path: ':post_id'}, function(){
+      this.route('show');
+      this.route('edit');
+    });
+  });
+});
+</pre></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Router Notes</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li><code>this.resource</code> is used for 'nouns'</li>
+<li><code>this.route</code> is used for 'verbs'</li>
+<li>You can pass a <code>path</code> to the route/resource for more control over the path.</li>
+<li>Each <code>path</code> portion builds upon its parent. In the last example the path for
+  <code>post.show</code> would be <code>/posts/1234/show</code>.</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Using {{link-to}} With Routes</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>Using the following template with the previous slides router:</p>
+<pre class="prettyprint" data-lang="handlebars">
+{{! application.hbs}}
+{{#link-to 'posts'}}Posts{{/link-to}}
+
+{{outlet}}
+</pre>
+
+<pre class="prettyprint" data-lang="handlebars">
+{{! application.hbs}}
+{{#link-to 'posts.show' 1}}Show Post #1{{/link-to}}
+
+{{outlet}}
+</pre></article>
+ 
+</slide>
+
+<slide class="segue dark nobackground" >
+  
+    <aside class="gdbar"><img src="images/ember_icon_128.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Basic Routing Demo</h2>
+      <h3><a href="http://emberjs.jsbin.com/mib/1/edit">JSBin</a></h3>
+    </hgroup>
+  
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Controller</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><pre class="prettyprint" data-lang="javascript">
+App = Ember.Application.create();
+App.ApplicationRoute = Ember.Route.extend({
+  model: function(){
+    return {firstName: 'Robert', lastName: 'Jackson'};
+  }
+});
+
+App.ApplicationController = Ember.ObjectController.extend({
+  fullName: function(){
+    return this.get('firstName') + ' ' + this.get('lastName');
+  }.property('firstName', 'lastName')
+});
+
+</pre>
+
+<p><a href="http://emberjs.jsbin.com/pac/2/edit?html,javascript,live">JSBin Demo</a></p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Controller Notes</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li>The router wraps each model in a controller and sets it as the template target.</li>
+<li>As with most things Ember will create a default for you.</li>
+<li>Functions as a decorator, allowing the model to be disconnected from view layer concerns.</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Actions</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><pre class="prettyprint" data-lang="javascript">
+App = Ember.Application.create();
+App.ApplicationRoute = Ember.Route.extend({
+  model: function(){
+    return Ember.Object.create({name: 'Robert', clickCount: 0});
+  },
+  actions: {
+    incrementCount: function(model){
+      model.incrementProperty('clickCount');
+    }
+  }
+});
+</pre>
+
+<p><a href="http://emberjs.jsbin.com/pac/3/edit?html,javascript,live">JSBin Demo</a></p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Actions</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><pre class="prettyprint" data-lang="javascript">
+App = Ember.Application.create();
+App.ApplicationRoute = Ember.Route.extend({
+  model: function(){
+    return Ember.Object.create({name: 'Robert', clickCount: 0});
+  }
+});
+
+App.ApplicationController = Ember.ObjectController.extend({
+  actions: {
+    incrementCount: function(model){
+      model.incrementProperty('clickCount');
+    }
+  }
+});
+</pre>
+
+<p><a href="http://emberjs.jsbin.com/pac/4/edit?html,javascript,live">JSBin Demo</a></p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Action Notes</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li>Turns DOM events into events with semantic meaning to your application.</li>
+<li>Actions bubble from the template -&gt; controller -&gt; route -&gt; parent route (all the way up to ApplicationRoute).</li>
+<li>Can accept any number of parameters.</li>
+</ul></article>
+ 
+</slide>
+
+<slide class="segue dark nobackground" >
+  
+    <aside class="gdbar"><img src="images/ember_icon_128.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>CRUD'ish Demo</h2>
+      <h3><a href="http://emberjs.jsbin.com/mib/2/edit?html,javascript">JSBin</a></h3>
+    </hgroup>
+  
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Where can I learn more?</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li><a href="http://emberjs.com/guides/">Ember.js Guides</a></li>
+<li><a href="https://www.codeschool.com/courses/warming-up-with-emberjs">Code School - Warming up with Ember.js</a></li>
+<li><a href="http://emberwatch.com/">EmberWatch</a></li>
+<li><a href="http://www.tilde.io/events/introduction-to-ember-online/">Tilde - Introduction to Ember</a></li>
+</ul></article>
+ 
+</slide>
+
+
+<slide class="thank-you-slide segue nobackground">
+  <aside class="gdbar right"><img src="images/ember_icon_128.png"></aside>
+  <article class="flexbox vleft auto-fadein">
+    <h2>&lt;Thank You!&gt;</h2>
+  </article>
+  <p class="auto-fadein" data-config-contact>
+    <!-- populated from slide_config.json -->
+  </p>
+</slide>
+
+<!-- <slide class="logoslide dark nobackground">
+  <article class="flexbox vcenter">
+    <span><img src="images/google_developers_logo_white.png"></span>
+  </article>
+</slide> -->
+
+<slide class="backdrop"></slide>
+
+</slides>
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
